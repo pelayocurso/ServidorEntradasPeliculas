@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
+using System;
 
 namespace ServidorEntradasPeliculas.Models
 {
@@ -20,6 +21,8 @@ namespace ServidorEntradasPeliculas.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        [ThreadStatic]
+        public static ApplicationDbContext applicationDbContext;
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
@@ -29,5 +32,9 @@ namespace ServidorEntradasPeliculas.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<ServidorEntradasPeliculas.Models.Entrada> Entradas { get; set; }
+
+        public System.Data.Entity.DbSet<ServidorEntradasPeliculas.Models.Pelicula> Peliculas { get; set; }
     }
 }
